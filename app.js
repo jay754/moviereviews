@@ -35,12 +35,10 @@ var redditData = function(callback, movie_id){
 
 var getData = function(data){
 
-  var results = { 
-  	              "positive" : 0,
-  				  "negative" : 0
-  				};
+  var results = { "positive" : 0,
+                  "negative" : 0 };
 
-  console.log(data.reviews[0]["quote"]);
+  //console.log(data.reviews[0]["quote"]);
   
   for(var i=1;i<15;i++){
   	total = score(data.reviews[i]["quote"]);
