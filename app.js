@@ -17,7 +17,9 @@ var score = function(sentence){
   return analyze(sentence)["score"];
 }
 
-var redditData = function(callback, movie_id){
+
+//getting moviedata method 
+var movieData = function(callback, movie_id){
 
 	request({
 	  //uri: 'http://www.reddit.com/user/' + username +'/comments.json', 
@@ -33,6 +35,8 @@ var redditData = function(callback, movie_id){
 	});
 }
 
+
+//creating a count for positive and negative reviews
 var getData = function(data){
 
   var results = { "positive" : 0,
