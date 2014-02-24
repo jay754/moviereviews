@@ -1,13 +1,14 @@
 //module intialization for express
 var express = require("express");
 var reddit = require("redwrap");
+var analyze = require('Sentimental').analyze //analyze sentimental value for a sentence
 
-//analyze sentimental value for a sentence
-var analyze = require('Sentimental').analyze,
-    positivity = require('Sentimental').positivity,
-    negativity = require('Sentimental').negativity;
+//function for finding out the score for the sentence
+var score = function(sentence){
+	return analyze(sentence)["score"];
+}
 
-console.log(analyze("I love you")["score"]); //Score: -6, Comparative:-1.5
+//console.log(score("I love you")); //Score: -6, Comparative:-1.5
 
 //reddit wrapper test
 reddit.r('awww').sort('top').all(function(res){
