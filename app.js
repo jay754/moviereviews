@@ -80,8 +80,19 @@ var getData = function(data){
 	}
   }
   
-  console.log(results);
+  main(results);
   //console.log(score(data.reviews[2]["quote"]));
+}
+
+
+//main method for running the code
+var main = function(data){
+  if(data["positive"] > data["negative"]){
+  	console.log("you ain't mad bro");
+  }
+  else{
+  	console.log("you mad bro?");
+  }
 }
 
 movieData(getData, '770672122');
