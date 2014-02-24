@@ -72,14 +72,15 @@ var getData = function(data){
   for(var i=1;i<15;i++){
   	total = score(data.reviews[i]["quote"]);
 
-	if(total > 0){
-		results["positive"] += 1;
-	}
-	else{
-		results["negative"] += 1;
-	}
+	  if(total > 0){
+		  results["positive"] += 1;
+	  }
+	  else{
+		  results["negative"] += 1;
+	  }
   }
   
+  console.log(results);
   main(results);
   //console.log(score(data.reviews[2]["quote"]));
 }
@@ -87,11 +88,12 @@ var getData = function(data){
 
 //main method for running the code
 var main = function(data){
+  //console.log(data);
   if(data["positive"] > data["negative"]){
-  	console.log("you ain't mad bro");
+    console.log("you ain't mad bro");
   }
   else{
-  	console.log("you mad bro?");
+    console.log("you mad bro?");
   }
 }
 
