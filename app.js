@@ -7,18 +7,43 @@ App.js
 
 //module intialization for express
 var express = require("express");
-var reddit = require("redwrap");
+//var reddit = require("redwrap");
 var request = require("request");
 var analyze = require('Sentimental').analyze //analyze sentimental value for a sentence
 //console.log(score("I love you")); //Score: -6, Comparative:-1.5
 
+/* Basic math functions */
+
 //function for finding out the score for the sentence
 var score = function(sentence){
-  return analyze(sentence)["score"];
+  var total = parseInt(analyze(sentence)["score"]);
+  return total;
 }
 
 
-//getting moviedata method 
+//for ratio between the positive and negative scoring
+var ratio = function(positive_score, negative_score){
+  var ratio = parseFloat(positive_score/negative_score);
+  return ratio;
+}
+
+
+//getting the total positive percetage
+var positivePercentage = function(total_positive, total_reviews){
+  var per = parseFloat(total_positive/total_reviews);
+  return per;
+}
+
+
+//getting the total negative percentage
+var negativePercentage = function(total_negative, total_reviews){
+  var per = parseFloat(total_negative/total_reviews);
+  return per;
+}
+
+/* Basic Math Functions */
+
+//getting moviedata method
 var movieData = function(callback, movie_id){
 
 	request({
@@ -59,4 +84,4 @@ var getData = function(data){
   //console.log(score(data.reviews[2]["quote"]));
 }
 
-redditData(getData, '770672122');
+movieData(getData, '770672122');
