@@ -2,18 +2,16 @@ $(function(){
  
   $("#b").click(function(){
     
-    var movie = $("#movie").val();
-    console.log("movie");
+    var movie = $("#movie").val().toLowerCase();
 
     $.ajax({
 
        url: "/movies/"+movie,
        type: "GET",
-       // data: {movie_data: movie},
        dataType: "json",
 
        success: function(data){
-         console.log(data); //this should start at 1
+         console.log(data);
        },
 
        error: function(xhr, ajaxOptions, thrownError){
@@ -25,4 +23,4 @@ $(function(){
 
   });
 
-})
+});

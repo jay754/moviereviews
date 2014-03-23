@@ -50,7 +50,7 @@ var negativePercentage = function(total_negative, total_reviews){
 /* Basic Math Functions */
 
 //getting moviedata method
-var movieData = function(callback, movie_id){
+var movieData = function(movie_id, callback){
 
   request({
     uri: 'http://api.rottentomatoes.com/api/public/v1.0/movies/'+ movie_id +'/reviews.json?apikey=5zpsctg74hteqeqmk9saswwc',
@@ -59,30 +59,25 @@ var movieData = function(callback, movie_id){
     followRedirect: true,
     maxRedirects: 10
   }, function(error, response, body){
-	     //callback(body);
-       callback(JSON.parse(body));
-  });
-}
+       //callback(body);
+       data = JSON.parse(body);
 
-//creating a count for positive and negative reviews
-var getData = function(data){
+       var results = { "positive" : 0,
+                       "negative" : 0 };
 
-  var results = { "positive" : 0,
-                  "negative" : 0 };
+        for(var i=1;i<15;i++){
+          total = score(data.reviews[i]["quote"]);
 
-  for(var i=1;i<15;i++){
-    total = score(data.reviews[i]["quote"]);
+          if(total > 0){
+            results["positive"] += 1;
+          }
+          else{
+            results["negative"] += 1;
+          }
+        }
 
-    if(total > 0){
-      results["positive"] += 1;
-	  }
-    else{
-      results["negative"] += 1;
-    }
-  }
-  
-  console.log(results);
-  main(results);
+        callback(results);
+    });
 }
 
 //just the router
@@ -105,23 +100,25 @@ app.get("/movies/:movie_name", function(req, res){
     followRedirect: true,
     maxRedirects: 10
   }, function(error, response, body){
-       res.json(JSON.parse(body));
+       var data = JSON.parse(body);
+       var id = data.movies[0].id;
+
+       movieData(id, function(r){
+         
+         var rat = ratio(r["positive"], r["negative"]);
+         var total_reviews = r["positive"] + r["negative"];
+         var positive_score = positivePercentage(r["positive"], total_reviews);
+         var negative_score = negativePercentage(r["negative"], total_reviews);
+      
+         res.json({
+           "data" : r,
+           "positive to negative ratio" : rat,
+           "positive_score" : positive_score,
+           "negative_score" : negative_score
+         });
+      });
   });
 });
-
-//main method for running the code
-var main = function(data){
-  //console.log(data);
-  if(data["positive"] > data["negative"]){
-    console.log("you ain't mad bro");
-  }
-  else{
-    console.log("you mad bro?");
-  }
-}
-
-//running the main method
-movieData(getData, '770672122');
 
 //starting the server
 app.listen(port, host, function(){
