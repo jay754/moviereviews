@@ -15,6 +15,9 @@ var app = express();
 var port = 2000;
 var host = "127.0.0.1";
 
+//for static content
+app.use(express.static(__dirname + "/public"));
+
 /* Basic math functions */
 
 //function for finding out the score for the sentence
@@ -87,6 +90,10 @@ var getData = function(data){
 app.use(app.router);
 
 /* http request on getting the movie that is wanted */
+
+app.use(function(req, res) {
+  res.sendfile(__dirname + '/public/index.html');
+});
 
 app.get("/movies/:movie_name", function(req, res){
   var movie = req.params.movie_name;
