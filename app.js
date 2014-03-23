@@ -62,22 +62,48 @@ var movieData = function(movie_id, callback){
        //callback(body);
        data = JSON.parse(body);
 
-       var results = { "positive" : 0,
-                       "negative" : 0 };
-
-        for(var i=1;i<15;i++){
-          total = score(data.reviews[i]["quote"]);
-
-          if(total > 0){
-            results["positive"] += 1;
-          }
-          else{
-            results["negative"] += 1;
-          }
-        }
-
-        callback(results);
+       callback(data);
     });
+}
+
+var setData = function(data, callback){
+  var results = { "positive" : 0,
+                  "negative" : 0 };
+
+  var limit = 15; //for the first page
+
+  for(var i=1;i<limit;i++){
+    total = score(data.reviews[i]["quote"]);
+
+    if(total > 0){
+      results["positive"] += 1;
+    }
+    else{
+      results["negative"] += 1;
+    }
+  }
+
+  callback(results);
+}
+
+var getReviews = function(data, callback){
+
+  var results = []
+
+  var limit = 15; //for the first page
+
+  for(var i=1;i<limit;i++){
+    NLPs = score(data.reviews[i]["quote"]);
+    r = data.reviews[i]["quote"];
+    c = data.reviews[i]["critic"];
+
+    results.push({ "reviews" : r,
+                   "critics" : c,
+                   "NLPscore" : NLPs });
+  }
+
+  callback(results);
+
 }
 
 //just the router
@@ -105,19 +131,25 @@ app.get("/movies/:movie_name", function(req, res){
 
        movieData(id, function(r){
          
-         var rat = ratio(r["positive"], r["negative"]);
-         var total_reviews = r["positive"] + r["negative"];
-         var positive_score = positivePercentage(r["positive"], total_reviews);
-         var negative_score = negativePercentage(r["negative"], total_reviews);
-      
-         res.json({
-           "data" : r,
-           "positive to negative ratio" : rat,
-           "positive_score" : positive_score,
-           "negative_score" : negative_score
+         setData(r, function(data){
+
+           var rat = ratio(data["positive"], data["negative"]);
+           var total_reviews = data["positive"] + data["negative"];
+           var positive_score = positivePercentage(data["positive"], total_reviews);
+           var negative_score = negativePercentage(data["negative"], total_reviews);
+          
+           getReviews(r, function(reviews){
+             res.json({
+               "Data" : data,
+               "Positive to negative ratio" : rat,
+               "positive score" : positive_score,
+               "negative score" : negative_score,
+               "Actual Reviews" : reviews,
+             });
+           });
          });
       });
-  });
+   });
 });
 
 //starting the server
