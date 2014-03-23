@@ -49,16 +49,16 @@ var negativePercentage = function(total_negative, total_reviews){
 //getting moviedata method
 var movieData = function(callback, movie_id){
 
-	request({
-	  uri: 'http://api.rottentomatoes.com/api/public/v1.0/movies/'+ movie_id +'/reviews.json?apikey=5zpsctg74hteqeqmk9saswwc',
-	  method: "GET",
-	  timeout: 10000,
-	  followRedirect: true,
-	  maxRedirects: 10
-	}, function(error, response, body){
+  request({
+    uri: 'http://api.rottentomatoes.com/api/public/v1.0/movies/'+ movie_id +'/reviews.json?apikey=5zpsctg74hteqeqmk9saswwc',
+    method: "GET",
+    timeout: 10000,
+    followRedirect: true,
+    maxRedirects: 10
+  }, function(error, response, body){
 	     //callback(body);
-	     callback(JSON.parse(body));
-	});
+       callback(JSON.parse(body));
+  });
 }
 
 //creating a count for positive and negative reviews
@@ -68,14 +68,14 @@ var getData = function(data){
                   "negative" : 0 };
 
   for(var i=1;i<15;i++){
-  	total = score(data.reviews[i]["quote"]);
+    total = score(data.reviews[i]["quote"]);
 
-	  if(total > 0){
-		  results["positive"] += 1;
+    if(total > 0){
+      results["positive"] += 1;
 	  }
-	  else{
-		  results["negative"] += 1;
-	  }
+    else{
+      results["negative"] += 1;
+    }
   }
   
   console.log(results);
