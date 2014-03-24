@@ -1,5 +1,15 @@
 $(function(){
- 
+  
+  var load = $("#loading");
+
+  load.hide().ajaxStart(function(){
+    $(this).show();
+  });
+  load.ajaxStop(function(){
+    $(this).hide();
+  });
+
+
   $("#b").click(function(){
     
     var movie = $("#movie").val().toLowerCase();
