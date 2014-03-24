@@ -141,10 +141,10 @@ app.get("/movies/:movie_name", function(req, res){
            getReviews(r, function(reviews){
              res.json({
                "Data" : data,
-               "Positive to negative ratio" : rat,
-               "positive score" : positive_score,
-               "negative score" : negative_score,
-               "Actual Reviews" : reviews,
+               "Positive_to_negative ratio" : rat,
+               "positive_score" : positive_score,
+               "negative_score" : negative_score,
+               "Actual_Reviews" : reviews,
              });
            });
          });
